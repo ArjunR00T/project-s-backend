@@ -1,0 +1,74 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - project-s-network
+
+  user-service:
+    build: ./project-s-user-service
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./project-s-user-service/.env
+    depends_on:
+      - redis
+    networks:
+      - project-s-network
+
+  shop-service:
+    build: ./project-s-shop-service
+    ports:
+      - "5002:5002"
+    env_file:
+      - ./project-s-shop-service/.env
+    depends_on:
+      - redis
+    networks:
+      - project-s-network
+
+  request-service:
+    build: ./project-s-request-service
+    ports:
+      - "5003:5003"
+    env_file:
+      - ./project-s-request-service/.env
+    depends_on:
+      - redis
+      - user-service
+      - shop-service
+    networks:
+      - project-s-network
+
+  book-service:
+    build: ./project-s-booking-service
+    ports:
+      - "5004:5004"
+    env_file:
+      - ./project-s-booking-service/.env
+    depends_on:
+      - redis
+      - request-service
+    networks:
+      - project-s-network
+
+  api-gateway:
+    build: ./project-s-api-gateway
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./project-s-api-gateway/.env
+    depends_on:
+      - user-service
+      - shop-service
+      - request-service
+      - book-service
+    networks:
+      - project-s-network
+
+networks:
+  project-s-network:
+    driver: bridge
