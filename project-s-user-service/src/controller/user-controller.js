@@ -1,8 +1,15 @@
 // services/user.service.js
 import UserModel from "../models/user-model.js";
 
-const createUser = async ({ name, email, firebaseId }) => {
-  return await UserModel.create({ name, email, firebaseId });
+const createUser = async (req, res) => {
+  const { name, email, firebaseId } = req.body;
+  const user = new UserModel({ name, email, firebaseId });
+  try {
+    const savedUser = await user.save();
+    res.status(201).json(savedUser);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 const getUserById = async (id) => {
