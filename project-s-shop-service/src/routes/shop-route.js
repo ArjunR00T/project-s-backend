@@ -2,7 +2,7 @@ import { Router } from "express";
 import shopcontroller from "../controllers/shop-controller.js";
 // import backfillGeoBuckets from "../utils/backFillBucketId.js";
 
-const { addShop, getUserShops, delUserShop, getShopsInRange } = shopcontroller;
+const { addShop, editShop, getUserShops, delUserShop, getShopsInRange } = shopcontroller;
 
 const route = Router();
 
@@ -21,7 +21,8 @@ route.route("/ping").get((req, res) => {
   res.status(200).json({ message: "Shop service says: PONG!" });
 });
 route.route("/addShop").post(addShop);
-route.route("/getUserShops").post(getUserShops); // NOt sure its of any use, but keeping it for nowz
+route.route("/updateShop/:id").put(editShop);
+route.route("/getUserShops").post(getUserShops);
 route.route("/delUserShop").post(delUserShop);
 route.route("/getShopsInRange").post(getShopsInRange);
 

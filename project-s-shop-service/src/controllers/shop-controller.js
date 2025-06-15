@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import logger from "../utils/logger.js";
 import shopService from "../services/shop.services.js";
+
 // Add a new shop
 export const addShop = asyncHandler(async (req, res) => {
   logger.info("→ addShop called");
@@ -8,6 +9,23 @@ export const addShop = asyncHandler(async (req, res) => {
   const shop = await shopService.createShop(req.body);
   res.status(201).json({ shop });
 });
+
+// Edit an existing shop
+export const editShop = asyncHandler(async (req, res) => {
+  logger.info("→ editShop called");
+
+  const { id } = req.params;
+
+  if (!id) {
+    logger.warn("Shop ID missing in editShop");
+    res.status(400).json({ message: "Shop ID is required" });
+    return;
+  }
+
+  const updatedShop = await shopService.updateShop(id, req.body);
+  res.status(200).json({ shop: updatedShop });
+});
+
 
 // Get all shops by a specific owner
 export const getUserShops = asyncHandler(async (req, res) => {
@@ -53,6 +71,7 @@ export const getShopsInRange = asyncHandler(async (req, res) => {
 
 export default {
   addShop,
+  editShop,
   getUserShops,
   delUserShop,
   getShopsInRange,

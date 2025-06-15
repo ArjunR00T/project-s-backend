@@ -23,7 +23,7 @@ export async function handleIncomingRequest(partnerId, customerId) {
     logger.info(
       `[handleIncomingRequest] Cool off period active for ${customerId} for partner ${partnerId}`
     );
-    throw new Error(`COOL-OFF`);
+    throw new Error(`COOL_OFF`);
   }
 
   await redisClient.rPush(cacheKey, customerId);
