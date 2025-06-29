@@ -9,5 +9,7 @@ route.route("/adduser/").post(UserController.createUser);
 route.route("/getuser/:userid").get(UserController.getUserById);
 route.route("/deleteuser/:userid").delete(UserController.deleteUserById);
 route.route("/update/").post(UserController.updateUserById);
+route.route("/registerfcm/").post(UserController.registerFcmToken);
+route.route("/getfcm/:userid").get(UserController.getFcmTokenByUserId);
 
 export default route;

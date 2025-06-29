@@ -6,12 +6,14 @@ const userSchema = Schema(
       type: String,
       required: true,
     },
-
     firebaseId: {
       type: String,
       required: true,
     },
-
+    fcmToken: {
+      type: String,
+      required: false,
+    },
     email: {
       type: String,
       required: true,

@@ -124,6 +124,27 @@ async function sendRequest(partnerId) {
   // Notification, analytics, etc. can be called here
 }
 
+async function sendNotification(partnerId, customerId) {
+  try {
+    const response = await axios.post(
+      "http://notification-service:5001/api/notification/send",
+      {
+        partnerId,
+        customerId,
+      }
+    );
+    logger.info(
+      `[sendNotification] Notification sent for ${customerId} at partner ${partnerId}`,
+      response.data
+    );
+  } catch (error) {
+    logger.error(
+      `[sendNotification] Error sending notification for ${customerId} at partner ${partnerId}`,
+      error
+    );
+  }
+}
+
 export async function getQueue(partnerId) {
   const queueKey = `queue:${partnerId}`;
   logger.info(`[getQueue] Fetching queue for partner ${partnerId}`);
